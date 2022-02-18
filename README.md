@@ -1,3 +1,3 @@
 # ZeNext One
 
-### Website with Server-side Rendering built using Reactjs, Nextjs, Typescript, Styled Components, Graphql and Nodejs and MongoDB
+### Website with Server-side Rendering. Built using Reactjs, Nextjs, Typescript, Styled Components, Graphql and Nodejs and MongoDB
