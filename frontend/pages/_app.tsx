@@ -8,16 +8,23 @@ import "../components/styles/nprogress.css";
 import Layout from "../components/Layout";
 import Router from "next/router";
 import nProgress from "nprogress";
+import { ApolloClient, ApolloProvider } from "@apollo/client";
 
 Router.events.on("routeChangeStart", () => NProgress.start());
 Router.events.on("routeChangeComplete", () => NProgress.done());
 Router.events.on("routeChangeError", () => NProgress.done());
 
-function MyApp({ Component, pageProps }: AppProps) {
+interface Props {
+	apollo: ApolloClient<{}>;
+}
+
+function MyApp({ Component, pageProps, apollo }: AppProps & Props) {
 	return (
-		<Layout>
-			<Component {...pageProps} />
-		</Layout>
+		<ApolloProvider client={apollo}>
+			<Layout>
+				<Component {...pageProps} />
+			</Layout>
+		</ApolloProvider>
 	);
 }
 
