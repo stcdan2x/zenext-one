@@ -28,7 +28,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 		errorLink,
 		new HttpLink({
 			uri: "https://graphql.contentful.com/content/v1/spaces/dxiopi40liwa/environments/master",
-			headers: { Authentication: "Bearer iGhTpR2RDNMlW_uo9SEec15D6vzh_GMZwkM965L2Y-g" }
+			headers: { Authorization: "Bearer iGhTpR2RDNMlW_uo9SEec15D6vzh_GMZwkM965L2Y-g" }
 		})
 	]);
 
