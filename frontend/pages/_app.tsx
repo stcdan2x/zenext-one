@@ -15,29 +15,29 @@ Router.events.on("routeChangeStart", () => NProgress.start());
 Router.events.on("routeChangeComplete", () => NProgress.done());
 Router.events.on("routeChangeError", () => NProgress.done());
 
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+	if (graphQLErrors) {
+		graphQLErrors.map(({ message, locations, path }) => {
+			alert(`Graphql Error: ${message} in ${locations}. PATH:${path}`);
+		});
+	}
+});
+
+const link = from([
+	errorLink,
+	new HttpLink({
+		uri: process.env.CONTENTFUL_URI,
+		headers: { Authorization: `Bearer ${process.env.CONTENTFUL_ACCESS_TOKEN}` }
+	})
+]);
+
+const client = new ApolloClient({
+	cache: new InMemoryCache(),
+	link: link,
+	ssrMode: typeof window === "undefined" // set to true for SSR
+});
+
 function MyApp({ Component, pageProps }: AppProps) {
-	const errorLink = onError(({ graphQLErrors, networkError }) => {
-		if (graphQLErrors) {
-			graphQLErrors.map(({ message, locations, path }) => {
-				alert(`Graphql Error: ${message} in ${locations}. PATH:${path}`);
-			});
-		}
-	});
-
-	const link = from([
-		errorLink,
-		new HttpLink({
-			uri: "https://graphql.contentful.com/content/v1/spaces/dxiopi40liwa/environments/master",
-			headers: { Authorization: "Bearer iGhTpR2RDNMlW_uo9SEec15D6vzh_GMZwkM965L2Y-g" }
-		})
-	]);
-
-	const client = new ApolloClient({
-		cache: new InMemoryCache(),
-		link: link,
-		ssrMode: typeof window === "undefined" // set to true for SSR
-	});
-
 	return (
 		<ApolloProvider client={client}>
 			<Layout>

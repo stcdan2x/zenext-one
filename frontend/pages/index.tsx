@@ -1,8 +1,13 @@
 import React, { useState } from "react";
-import { ContentfulClientApi, createClient } from "contentful";
+//import { ContentfulClientApi, createClient } from "contentful";
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/client";
 import Head from "next/head";
+import Image from "next/image";
+import ImgBox from "../components/styles/ImgBoxStyles";
+import CardContainer from "../components/styles/CardContainer";
+
+import "../styles/index.module.css";
 
 const ALL_PRODUCTS_Q = gql`
 	query ALL_PRODUCTS {
@@ -20,6 +25,7 @@ const ALL_PRODUCTS_Q = gql`
 				status
 				price
 				photo {
+					url
 					size
 					fileName
 					contentfulMetadata {
@@ -56,6 +62,9 @@ export interface Product {
 	price: string;
 	status: string;
 	description: string;
+	photo: {
+		url: string;
+	};
 }
 
 const Index = () => {
@@ -68,6 +77,7 @@ const Index = () => {
 				zenextoneCollection: { items }
 			} = data;
 			setItems(items);
+			console.log(items);
 		}
 	});
 
@@ -81,10 +91,22 @@ const Index = () => {
 					{items.map((product: Product, idx) => {
 						return (
 							<li key={idx}>
-								<h1>{product.name}</h1>
-								<h4>{product.price}</h4>
-								<h4>{product.status}</h4>
-								<p>{product.description}</p>
+								<CardContainer>
+									<ImgBox className="image-container">
+										<Image
+											className="product-image"
+											src={product.photo.url}
+											width={500}
+											height={500}
+											layout="responsive"
+											alt="instrument image"
+											objectFit="contain"></Image>
+									</ImgBox>
+									<h2>{product.name}</h2>
+									<h4>{product.price}</h4>
+									<h4>{product.status}</h4>
+									<p>{product.description}</p>
+								</CardContainer>
 							</li>
 						);
 					})}

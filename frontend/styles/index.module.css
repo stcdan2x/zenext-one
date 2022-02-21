@@ -1,0 +1,7 @@
+.product-image {
+	border: 3px silver solid;
+	border-radius: 10px;
+	width: 30px;
+	height: 30px;
+	padding: 60px;
+}
