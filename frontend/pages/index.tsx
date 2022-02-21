@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { ContentfulClientApi, createClient } from "contentful";
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/client";
+import Head from "next/head";
 
 const ALL_PRODUCTS_Q = gql`
 	query ALL_PRODUCTS {
@@ -33,21 +34,28 @@ const ALL_PRODUCTS_Q = gql`
 	}
 `;
 
-export async function getServerSideProps() {
-	const client = createClient({
-		space: process.env.CONTENTFUL_SPACE_ID,
-		accessToken: process.env.CONTENTFUL_ACCESS_TOKEN
-	});
+// export async function getServerSideProps() {
+// 	const client = createClient({
+// 		space: process.env.CONTENTFUL_SPACE_ID,
+// 		accessToken: process.env.CONTENTFUL_ACCESS_TOKEN
+// 	});
 
-	const res = await client.getEntries({ content_type: "zenextone" });
+// 	const res = await client.getEntries({ content_type: "zenextone" });
 
-	console.log(res);
+// 	console.log(res);
 
-	return {
-		props: {
-			zenextoneItems: res.items
-		}
-	};
+// 	return {
+// 		props: {
+// 			zenextoneItems: res.items
+// 		}
+// 	};
+// }
+
+export interface Product {
+	name: string;
+	price: string;
+	status: string;
+	description: string;
 }
 
 const Index = () => {
@@ -65,13 +73,18 @@ const Index = () => {
 
 	return (
 		<>
+			<Head>
+				<title>Home</title>
+			</Head>
 			{!loading && (
 				<ul className="index-container">
-					{items.map((product, idx) => {
+					{items.map((product: Product, idx) => {
 						return (
 							<li key={idx}>
 								<h1>{product.name}</h1>
 								<h4>{product.price}</h4>
+								<h4>{product.status}</h4>
+								<p>{product.description}</p>
 							</li>
 						);
 					})}
